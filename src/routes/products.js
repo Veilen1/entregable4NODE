@@ -1,14 +1,13 @@
 const { Router } = require("express")
 const routerProducts = Router()
-const { middleware1 } = require("../middleware")
+const { middleware1 } = require("../middleware/middleware")
+const { getAll, postProduct, getById} = require('../controllers/products');
 
-routerProducts.get("/", (req, res) => {
-    res.send("Get Products")
-})
+routerProducts.get("/", getAll)
 
-routerProducts.post("", middleware1, (req, res) => {
-    res.send("Nashee")
-})
+routerProducts.get("/:id", getById)
+
+routerProducts.post("/", postProduct)
 
 
 module.exports = routerProducts;
