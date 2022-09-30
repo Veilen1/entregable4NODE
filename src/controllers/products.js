@@ -1,28 +1,45 @@
-
-/* const listaProd = new Contenedor("../productos.txt") */
-
-const products = []
-
-const getAll = (req, res) => {
-    res.json(products)
-}
-
-const getById = (req, res) => {
-    const {id} = req.params
-    console.log(id);
-    if(id){
-        res.send(products.find(product => product.id === id))
-    }else{
-        res.send(`producto con id: ${id} no encontrado`)
+class ApiProd {
+    constructor(products){
+        this.products = products
     }
-    /* res.send(products.find(product => product.id === id)) */
+
+    getProducts = (req, res) => {
+        res.json(this.products)
+    }
+
+    getById(id){
+        let resultId = this.products.find(prod => prod.id == id)
+        return resultId
+    }
+
+    addProduct = (req, res) => {
+        const product = req.body
+        product.id = this.products.length + 1
+        this.products.push(product)
+        res.json(product)
+    }
+
+    getProductById = (req, res) => {
+        const id = req.params.id
+        if(this.getById(id) != (undefined || null)){
+            res.send({productoEncontrado: this.getById(id)})
+        }else{res.send(`producto no encontrado`)}
+
+    }
+
+    changeProduct = (req, res) =>{
+        const { id } = req.params
+        const product = req.body
+        product.id = id
+        this.products.splice(parseInt(id - 1), 1, product)
+        res.send({ productoModificado: product })
+    }
+
+    deleteProduct = (req, res) => {
+        const { id } = req.params
+        const product = this.products.splice(parseInt(id - 1), 1)
+        res.send({ productoEliminado: product })
+    }
 }
 
-const postProduct = (req, res) => {
-    let product = req.body
-    product.id = products.length + 1
-    products.push(product)
-    res.json(product)
-}
-
-module.exports = { getAll, postProduct, getById }
+module.exports = ApiProd

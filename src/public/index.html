@@ -8,9 +8,11 @@
 </head>
 <body>
     <form action="/api/products" method="post">
-        <input type="number">
-        <input type="text">
-        <input type="submit">
+        <label for="product"><b>Producto</b></label>
+        <input name="product" type="text" placeholder="">
+        <label for="price"><b>Precio</b></label>
+        <input name="price" type="number" placeholder="Precio:">
+        <button type="submit">Enviar</button>
     </form>
 </body>
 </html>

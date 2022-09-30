@@ -1,13 +1,32 @@
 const { Router } = require("express")
 const routerProducts = Router()
 const { middleware1 } = require("../middleware/middleware")
-const { getAll, postProduct, getById} = require('../controllers/products');
+const ApiProd = require('../controllers/products');
 
-routerProducts.get("/", getAll)
+let products = []
 
-routerProducts.get("/:id", getById)
+// Instanciando clase
+let api = new ApiProd(products)
 
-routerProducts.post("/", postProduct)
+//Routeando llamadas
+routerProducts.get("/", (req, res) => {
+    api.getProducts(req,res)
+})
 
+routerProducts.get("/:id", (req, res) =>{
+    api.getProductById(req,res)
+})
+
+routerProducts.post("/", (req, res) => {
+    api.addProduct(req, res)
+})
+
+routerProducts.put("/:id", (req, res) => {
+    api.changeProduct(req,res)
+})
+
+routerProducts.delete("/:id", (req, res) => {
+    api.deleteProduct(req, res)
+})
 
 module.exports = routerProducts;
